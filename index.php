@@ -1,5 +1,9 @@
 <?php
 //set_time_limit(30);
+set_error_handler(function ($err_severity, $err_msg, $err_file, $err_line, array $err_context)
+{
+    throw new ErrorException( $err_msg, 0, $err_severity, $err_file, $err_line );
+}, E_WARNING);
 if(!file_exists("AllLines.txt") & !file_exists("AllPoints.txt")){
 	copy("http://zn5.m2mcontrol.com.br/api/forecast/lines/load/allLines/1228","AllLines.txt");
 	copy("http://zn5.m2mcontrol.com.br/api/forecast/lines/load/allPoints/1228","AllPoints.txt");	
@@ -25,7 +29,3 @@ foreach($linhas as $l){
 		print_r("[Erro]: ".$l["id"]." não existe ou apresentou erro.<br>");
 	}
 }
-set_error_handler(function ($err_severity, $err_msg, $err_file, $err_line, array $err_context)
-{
-    throw new ErrorException( $err_msg, 0, $err_severity, $err_file, $err_line );
-}, E_WARNING);
