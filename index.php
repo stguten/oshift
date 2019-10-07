@@ -44,6 +44,6 @@ function requisicao_handle($url)
 		curl_close($ch);
 		return curl_exec($ch);
 	}else{
-		throw new Exception("Error.");
+		return new Exception("Error.");
 	}
 }
