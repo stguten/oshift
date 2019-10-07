@@ -43,10 +43,10 @@ function requisicao_handle($url)
 	curl_setopt($ch, CURLOPT_URL, $url);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 	$info = curl_getinfo($ch);
-	if($info['CURLINFO_HTTP_CODE'] == 200){
+	if($info['http_code'] == 200){
 		curl_close($ch);
 		return curl_exec($ch);
 	}else{
-		throw new Exception('');
+		throw new Exception('Erro.');
 	}
 }
