@@ -3,7 +3,11 @@ list($usec, $sec) = explode(' ', microtime());
 $script_start = (float) $sec + (float) $usec;
 
 ini_set("display_errors", 1);
-set_time_limit(180);
+set_time_limit(60);
+set_error_handler(function ($err_severity, $err_msg, $err_file, $err_line, array $err_context)
+{
+    throw new ErrorException( $err_msg, 0, $err_severity, $err_file, $err_line );
+}, E_WARNING);
 
 copy("http://zn5.m2mcontrol.com.br/api/forecast/lines/load/allLines/1228","AllLines.txt");
 copy("http://zn5.m2mcontrol.com.br/api/forecast/lines/load/allPoints/1228","AllPoints.txt");	
@@ -39,11 +43,5 @@ function requisicao_handle($url)
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	$info = curl_getinfo($ch);
-	if($info['http_code'] == 200){
-		curl_close($ch);
-		return curl_exec($ch);
-	}else{
-		return new Exception("Error.");
-	}
+	return curl_exec($ch);
 }
