@@ -2,6 +2,7 @@
 list($usec, $sec) = explode(' ', microtime());
 $script_start = (float) $sec + (float) $usec;
 
+ini_set("display_errors", 1);
 set_time_limit(180);
 set_error_handler(function ($err_severity, $err_msg, $err_file, $err_line, array $err_context)
 {
