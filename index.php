@@ -4,10 +4,6 @@ $script_start = (float) $sec + (float) $usec;
 
 ini_set("display_errors", 1);
 set_time_limit(180);
-set_error_handler(function ($err_severity, $err_msg, $err_file, $err_line, array $err_context)
-{
-    throw new ErrorException( $err_msg, 0, $err_severity, $err_file, $err_line );
-}, E_WARNING);
 
 copy("http://zn5.m2mcontrol.com.br/api/forecast/lines/load/allLines/1228","AllLines.txt");
 copy("http://zn5.m2mcontrol.com.br/api/forecast/lines/load/allPoints/1228","AllPoints.txt");	
@@ -48,6 +44,6 @@ function requisicao_handle($url)
 		curl_close($ch);
 		return curl_exec($ch);
 	}else{
-		throw new NotFoundException();
+		throw new Exception('Error.');
 	}
 }
