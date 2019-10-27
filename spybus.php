@@ -8,7 +8,7 @@ set_error_handler(function ($err_severity, $err_msg, $err_file, $err_line, array
 {
     throw new ErrorException( $err_msg, 0, $err_severity, $err_file, $err_line );
 }, E_WARNING);
-$conn = new mysqli('localhost', 'root', '123456', 'onibus');
+$conn = new mysqli('qzkp8ry756433yd4.cbetxkdyhwsb.us-east-1.rds.amazonaws.com', 'sipx0a09no3u7hng', 'erdi5dg3l62tw4ih', 'erji1yf05gz84ess');
 
 $linhas = json_decode(file_get_contents("AllLines.txt"), TRUE);
 $busStop = json_decode(file_get_contents("AllPoints.txt"), TRUE);
