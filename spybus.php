@@ -24,7 +24,7 @@ foreach($linhas as $l){
 			salvaBd((int)preg_replace("/[^0-9]/", "", $xxx2[$i]["codVehicle"]),str_replace("'", "", $xxx2[$i]["patternName"]),$xxx2[$i]["arrivalTime"],$conn);
 		}
 	}catch(Exception $e){
-		//bdLog("[Erro]: ".$l["name"]." não existe ou apresentou erro.<br>");
+		bdLog("[Erro]: ".$l["name"]." não existe ou apresentou erro.<br>");
 	}
 }
 
@@ -39,7 +39,7 @@ function salvaBd($codOnibus,$rota,$tempo,$conn) {
 	}
 	$sql = "INSERT INTO num_onibus(id_onibus,rota,tempo_restante) VALUES ($codOnibus, '$rota', $tempo) ON DUPLICATE KEY UPDATE rota = '$rota',tempo_restante = $tempo";
 	if(!$conn->query($sql) == TRUE){		
-		//echo(mysqli_error($conn)."\n");
+		echo(mysqli_error($conn)."\n");
 	}
 }
 function bdLog($text){
