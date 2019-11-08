@@ -7,6 +7,9 @@ set_error_handler(function ($err_severity, $err_msg, $err_file, $err_line, array
 }, E_WARNING);
 $conn = new mysqli('g3v9lgqa8h5nq05o.cbetxkdyhwsb.us-east-1.rds.amazonaws.com', 'ztw23x4aswwp0ysq', 'uwhcmfz0snef9fmp', 'hf0d5zbejew4ut82');
 
+$linhas = json_decode(file_get_contents("AllLines.txt"), TRUE);
+$busStop = json_decode(file_get_contents("AllPoints.txt"), TRUE);
+
 foreach($linhas as $l){
 	
 	$path = json_decode(requisicao_handle("http://zn5.m2mcontrol.com.br/api/forecast/lines/load/pattern/".$l["id"]."/1228"), TRUE);
