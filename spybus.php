@@ -6,6 +6,11 @@ set_error_handler(function ($err_severity, $err_msg, $err_file, $err_line, array
     throw new ErrorException( $err_msg, 0, $err_severity, $err_file, $err_line );
 }, E_WARNING);
 $conn = new mysqli('g3v9lgqa8h5nq05o.cbetxkdyhwsb.us-east-1.rds.amazonaws.com', 'ztw23x4aswwp0ysq', 'uwhcmfz0snef9fmp', 'hf0d5zbejew4ut82');
+// Check connection
+if ($conn->connect_error) {
+	bdLog("[".date('d-m-Y H:i:s')."]Falha de Conexão: " . $conn->connect_error);
+	die();
+}
 
 $linhas = json_decode(file_get_contents("AllLines.txt"), TRUE);
 $busStop = json_decode(file_get_contents("AllPoints.txt"), TRUE);
@@ -30,13 +35,8 @@ foreach($linhas as $l){
 
 $conn->close();
 //Funções
-function salvaBd($codOnibus,$rota,$tempo,$conn) {	
+function salvaBd($codOnibus,$rota,$tempo,$conn) {		
 	
-	// Check connection
-	if ($conn->connect_error) {
-		bdLog("[".date('d-m-Y H:i:s')."]Falha de Conexão: " . $conn->connect_error);
-		die();
-	}
 	$sql = "INSERT INTO num_onibus(id_onibus,rota,tempo_restante) VALUES ($codOnibus, '$rota', $tempo) ON DUPLICATE KEY UPDATE rota = '$rota',tempo_restante = $tempo";
 	if(!$conn->query($sql) == TRUE){		
 		echo(mysqli_error($conn)."\n");
