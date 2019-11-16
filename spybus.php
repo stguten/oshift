@@ -36,7 +36,6 @@ foreach($linhas as $l){
 $conn->close();
 //Funções
 function salvaBd($codOnibus,$rota,$tempo,$conn) {		
-	
 	$sql = "INSERT INTO num_onibus(id_onibus,rota,tempo_restante) VALUES ($codOnibus, '$rota', $tempo) ON DUPLICATE KEY UPDATE rota = '$rota',tempo_restante = $tempo";
 	if(!$conn->query($sql) == TRUE){		
 		echo(mysqli_error($conn)."\n");
