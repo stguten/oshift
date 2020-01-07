@@ -9,7 +9,6 @@ set_error_handler(function ($err_severity, $err_msg, $err_file, $err_line, array
     throw new ErrorException( $err_msg, 0, $err_severity, $err_file, $err_line );
 }, E_WARNING);
 
-
 $linhas = json_decode(file_get_contents("AllLines.txt"), TRUE);
 $busStop = json_decode(file_get_contents("AllPoints.txt"), TRUE);
 
@@ -20,11 +19,11 @@ foreach($linhas as $l){
 	try{
 		$xxx = json_decode(requisicao_handle("http://zn5.m2mcontrol.com.br/api/forecast/lines/load/all/forecast/".$busStop[array_search($path[0]["type"],array_column($busStop,"name"))]["id"]."/".$path[0]["id"]."/1228"), TRUE);
 		for($i = 0; $i < count($xxx);$i++){
-			print_r("[".$xxx[$i]["codVehicle"]."]".$xxx[$i]["patternName"].": ".$xxx[$i]["arrivalTime"]." minutos.(<a href=\"https://www.google.com/maps/place/".$xxx[$i]["latLng"]["lat"].",+".$xxx[$i]["latLng"]["lng"]."\" target=\"_blank\">Localização no mapa</a>)<br>");
+			print_r("[".substr_replace($xxx[$i]["codVehicle"], '.', 3, 0)."]".$xxx[$i]["patternName"].": ".$xxx[$i]["arrivalTime"]." minutos.(<a href=\"https://www.google.com/maps/place/".$xxx[$i]["latLng"]["lat"].",+".$xxx[$i]["latLng"]["lng"]."\" target=\"_blank\">Localização no mapa</a>)<br>");
 		}
 		$xxx2 = json_decode(requisicao_handle("http://zn5.m2mcontrol.com.br/api/forecast/lines/load/all/forecast/".$busStop[array_search($path[1]["type"],array_column($busStop,"name"))]["id"]."/".$path[1]["id"]."/1228"), TRUE);
 		for($i = 0; $i < count($xxx2);$i++){
-			print_r("[".$xxx2[$i]["codVehicle"]."]".$xxx2[$i]["patternName"].": ".$xxx2[$i]["arrivalTime"]." minutos.(<a href=\"https://www.google.com/maps/place/".$xxx2[$i]["latLng"]["lat"].",+".$xxx2[$i]["latLng"]["lng"]."\" target=\"_blank\">Localização no mapa</a>)<br>");
+			print_r("[".substr_replace($xxx2[$i]["codVehicle"], '.', 3, 0)."]".$xxx2[$i]["patternName"].": ".$xxx2[$i]["arrivalTime"]." minutos.(<a href=\"https://www.google.com/maps/place/".$xxx2[$i]["latLng"]["lat"].",+".$xxx2[$i]["latLng"]["lng"]."\" target=\"_blank\">Localização no mapa</a>)<br>");
 		}
 	}catch(Exception $e){
 		print_r("[Erro]: ".$l["name"]." não existe ou apresentou erro.<br>");
