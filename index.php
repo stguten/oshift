@@ -3,7 +3,7 @@ list($usec, $sec) = explode(' ', microtime());
 $script_start = (float) $sec + (float) $usec;
 
 ini_set("display_errors", 1);
-set_time_limit(60);
+set_time_limit(0);
 set_error_handler(function ($err_severity, $err_msg, $err_file, $err_line, array $err_context)
 {
     throw new ErrorException( $err_msg, 0, $err_severity, $err_file, $err_line );
