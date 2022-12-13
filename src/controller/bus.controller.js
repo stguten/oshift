@@ -53,8 +53,21 @@ async function consulta(){
 }
 
 async function home(req, res){
-    const result = await consulta();
-    res.send(result);
+    const resultsql = await consulta();
+    let finalResult = new Array();
+    finalResult.push(['Veiculo','Rota','Tempo']);
+    for(const element of resultsql){
+        await http.get(`/forecast/lines/load/all/forecast/${element.fim}/${element.id_rota}/1228`)
+        .then((linha) =>{
+            if(linha.data.length > 0){
+            linha.data.forEach(onibus =>{                
+               finalResult.push([onibus.codVehicle,onibus.patternName, onibus.arrivalTime+' minutos']);
+            });            
+        }
+        })
+        .catch(e => console.log(e))
+    };
+    res.send(finalResult);
 }
 
 export {home, popularDataBase,criarTabelas};
