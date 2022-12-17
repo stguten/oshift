@@ -1,6 +1,7 @@
 import http from "../config/axios.config.js";
 import database from "../config/sqlite.config.js";
 import { readFileSync } from 'fs';
+import { pegarFoto } from "./onibusbrasil.controller.js";
 
 async function criarTabelas(){
     const sql = readFileSync('./src/sql/tables.sql','utf8') ;
@@ -45,7 +46,7 @@ async function consulta(){
         from rotas r
         left join linhas l on r.id_linha = r.id_linha
         left join pontos p on p.id = r.ponto_inicial
-        left join pontos p2 on p2.id = r.ponto_final`,(err,rows)=>{
+        left join pontos p2 on p2.id = r.ponto_final limit 10`,(err,rows)=>{
             if(err) reject(err);
             resolve(rows);
         });         
@@ -55,18 +56,19 @@ async function consulta(){
 async function home(req, res){
     const resultsql = await consulta();
     let finalResult = new Array();
-    finalResult.push(['Veiculo','Rota','Tempo']);
-    for(const element of resultsql){
+    finalResult.push(['Imagem','Veiculo','Rota','Tempo']);
+    for(const element of resultsql){   
         await http.get(`/forecast/lines/load/all/forecast/${element.fim}/${element.id_rota}/1228`)
-        .then((linha) =>{
+        .then(async (linha) =>{
             if(linha.data.length > 0){
-            linha.data.forEach(onibus =>{                
-               finalResult.push([onibus.codVehicle,onibus.patternName, onibus.arrivalTime+' minutos']);
-            });            
+            for(const onibus of linha.data){                 
+                const imagem = await pegarFoto(onibus.codVehicle);  
+                finalResult.push([imagem,onibus.codVehicle,onibus.patternName, onibus.arrivalTime+' minutos']);
+            }            
         }
         })
-        .catch(e => console.log(e))
-    };
+        .catch(e => console.log(e));
+    }
     res.send(finalResult);
 }
 
