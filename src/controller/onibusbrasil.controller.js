@@ -19,9 +19,14 @@ async function pegarFoto(numeroOnibus){
                 return $('body > main > div.container.ob-thumb.p-0 > div > div:nth-child(1) > a').attr('href');
             })
             .then(async (response)=>{
-                await http.get(`${response}`).then((response)=>{
+                await http.get(`${response}`).then(async (response)=>{
                     const $ = parsing(response.data);
-                    resolve("<img crossorigin=\"anonymous\" height=\"120\" width=\"120\" src=\""+$('#photo').attr('src')+"\">");
+                    await http.get($('#photo').attr('src').includes('http') ? $('#photo').attr('src') : 'http:'+$('#photo').attr('src'),{
+                        responseType:'arraybuffer'
+                    })
+                    .then((response)=>{                      
+                        resolve(`<img crossorigin="anonymous" width="120" height="90" src="data:${response.headers['content-type']};base64,${Buffer.from(response.data, 'binary').toString('base64')}"/>`);
+                    })
                 })
             });    
         });

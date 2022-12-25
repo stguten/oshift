@@ -17,7 +17,7 @@ async function popularDataBase(){
                 let nomeLinha = linha.name.split('-');
                 database.serialize(()=>{
                     database.run('INSERT OR IGNORE INTO linhas(id,nome,numero) values ($1,$2,$3)', 
-                        [linha.numero, nomeLinha.length == 1 ? linha.name.substring(linha.name.search(' ')).trimStart() : nomeLinha[1].trimStart(),linha.id]); 
+                        [linha.id,nomeLinha.length == 1 ? linha.name.substring(linha.name.search(' ')).trimStart() : nomeLinha[1].trimStart(),linha.numero]); 
 
                     database.run('INSERT OR IGNORE INTO rotas(id_linha,sentido,ponto_inicial, ponto_final, id_rota) values ($1,$2,$3,$4,$5)',
                         [linha.id, linha.trajetos[0].nome, linha.trajetos[0].startPoint._id, linha.trajetos[1].startPoint._id, linha.trajetos[0].id_migracao]);  
@@ -46,7 +46,7 @@ async function consulta(){
         from rotas r
         left join linhas l on r.id_linha = r.id_linha
         left join pontos p on p.id = r.ponto_inicial
-        left join pontos p2 on p2.id = r.ponto_final limit 10`,(err,rows)=>{
+        left join pontos p2 on p2.id = r.ponto_final`,(err,rows)=>{
             if(err) reject(err);
             resolve(rows);
         });         
