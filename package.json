@@ -5,8 +5,12 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node -r run.js",
+    "start": "node index.js",
     "dev": "nodemon"
+  }, 
+  "engines" : { 
+    "npm" : ">=8.0.0",
+    "node" : ">=16.0.0"
   },
   "keywords": [],
   "author": "",

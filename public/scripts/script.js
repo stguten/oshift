@@ -1,5 +1,4 @@
-$(document).ready(function (){
-    
+$(document).ready(function (){    
         //Build an array containing Customer records.
         
         fetch('/bus/')
